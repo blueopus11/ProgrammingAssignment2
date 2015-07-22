@@ -38,6 +38,16 @@ cacheSolve <- function(x, ...) {
                 return(inverseMatrix)
         }
         originalMatrix <- x$get()
+        
+        ## I keep entering matrices that are not invertible.
+        ## According to some research, det(<matrix>) = 0 indicates
+        ## that the matrix is not invertible, so I'm adding
+        ## that as a defensive check.  Return an empty matrix.
+        if (det(originalMatrix) == 0) {
+                message("matrix is not invertible")
+                return(matrix())
+        }
+        
         inverseMatrix <- solve(originalMatrix, ...)
         x$setInverse(inverseMatrix)
         x$getInverse()
